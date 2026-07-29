@@ -1,0 +1,20 @@
+# Dados gerados pelo pipeline (não versionar)
+data/raw/*
+data/staging/*
+data/marts/*
+
+# ...exceto os .gitkeep, que mantêm a estrutura de pastas no repo
+!data/raw/.gitkeep
+!data/staging/.gitkeep
+!data/marts/.gitkeep
+
+# Artefatos do Python
+__pycache__/
+*.pyc
+
+# Checkpoints automáticos do Jupyter
+.ipynb_checkpoints/
+
+# Ambientes virtuais (caso um dia crie um aqui)
+.venv/
+venv/
