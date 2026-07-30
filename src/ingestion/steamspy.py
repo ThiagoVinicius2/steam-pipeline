@@ -6,6 +6,9 @@ como estruturas Python, sem nenhuma transformação.
 
 import requests
 import time
+import json
+from datetime import date
+from pathlib import Path
 
 URL_BASE = "https://steamspy.com/api.php"
 TIMEOUT_SEGUNDOS = 30
@@ -70,3 +73,25 @@ def buscar_todos(max_paginas: int = 5) -> list[dict]:
             time.sleep(PAUSA_ENTRE_PAGINAS_SEGUNDOS)
 
     return todos_os_jogos
+
+def salvar_raw(jogos: list[dict], pasta: str = "data/raw") -> Path:
+    """Salva a lista de jogos como JSON na camada raw.
+
+    O nome do arquivo inclui a data da coleta para preservar
+    o histórico entre execuções.
+
+    Args:
+        jogos: lista de dicionários vinda de buscar_todos.
+        pasta: diretório de destino (padrão: data/raw).
+
+    Returns:
+        O caminho do arquivo salvo.
+    """
+    data_hoje = date.today().isoformat()
+    caminho = Path(pasta) / f"steamspy_raw_{data_hoje}.json"
+
+    with open(caminho, "w", encoding="utf-8") as arquivo:
+        json.dump(jogos, arquivo, ensure_ascii=False, indent=2)
+
+    print(f"Salvos {len(jogos)} jogos em {caminho}")
+    return caminho
